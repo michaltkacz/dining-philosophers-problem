@@ -19,7 +19,8 @@ class Simulation {
   int sleepTime;
   int philosophersNumber;
 
-  std::array<Fork, 128> forks;
+  // std::array<Fork, 128> forks;
+  Fork** forks;
   Philosopher** philosophers;
 
   std::thread consoleLogThread;

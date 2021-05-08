@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Philosopher::Philosopher(std::string name_, Fork& leftFork_, Fork& rightFork_,
+Philosopher::Philosopher(std::string name_, Fork* leftFork_, Fork* rightFork_,
                          int eatTime_, int sleepTime_)
     : name(std::move(name_)),
       leftFork(leftFork_),
@@ -25,9 +25,9 @@ std::string Philosopher::getName() { return name; }
 
 States Philosopher::getState() { return state; }
 
-Fork& Philosopher::getLeftFork() { return leftFork; }
+Fork* Philosopher::getLeftFork() { return leftFork; }
 
-Fork& Philosopher::getRightFork() { return rightFork; }
+Fork* Philosopher::getRightFork() { return rightFork; }
 
 int Philosopher::getEatNumber() { return eatNumber; }
 
@@ -50,7 +50,7 @@ void Philosopher::run() {
       // deadlock avoidance algorithm is used as if by std::lock.
       //
       // The scoped_lock class is non-copyable.
-      std::scoped_lock eat_lock(leftFork.mutex, rightFork.mutex);
+      std::scoped_lock eat_lock(leftFork->mutex, rightFork->mutex);
 
       // when forks are locked, eat
       eat();
@@ -64,8 +64,8 @@ void Philosopher::eat() {
   eatNumber++;
   state = States::Eat;
 
-  leftFork.setOwnerName(name);
-  rightFork.setOwnerName(name);
+  leftFork->setOwnerName(name);
+  rightFork->setOwnerName(name);
 
   thread_local std::uniform_real_distribution<> wait(-0.25, 0.25);
   std::this_thread::sleep_for(

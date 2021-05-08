@@ -11,14 +11,14 @@
 
 class Philosopher {
  public:
-  Philosopher(std::string name_, Fork& leftFork_, Fork& rightFork_,
+  Philosopher(std::string name_, Fork* leftFork_, Fork* rightFork_,
               int eatTime_, int sleepTime_);
   ~Philosopher();
 
   std::string getName();
   States getState();
-  Fork& getLeftFork();
-  Fork& getRightFork();
+  Fork* getLeftFork();
+  Fork* getRightFork();
   int getEatNumber();
   int getSleepNumber();
 
@@ -31,8 +31,8 @@ class Philosopher {
   std::atomic_bool keepRunning;
 
   std::string name;
-  Fork& leftFork;
-  Fork& rightFork;
+  Fork* leftFork;
+  Fork* rightFork;
 
   int eatTime;
   int sleepTime;
