@@ -11,6 +11,12 @@ Simulation::Simulation(int eatTime_, int sleepTime_, int pNum_)
       sleepTime(sleepTime_),
       philosophersNumber(pNum_),
       keepRunning(true) {
+  // init forks
+  forks = new Fork*[philosophersNumber];
+  for (int i = 0; i < philosophersNumber; i++) {
+    forks[i] = new Fork{};
+  }
+
   // init philosophers
   philosophers = new Philosopher*[philosophersNumber];
   for (int i = 0; i < philosophersNumber; i++) {
@@ -27,8 +33,10 @@ Simulation::~Simulation() {
   // delete philosophers
   for (int i = 0; i < philosophersNumber; i++) {
     delete philosophers[i];
+    delete forks[i];
   }
   delete[] philosophers;
+  delete[] forks;
   // finish console loggin thread
   consoleLogThread.join();
   // end
@@ -59,8 +67,8 @@ void Simulation::consoleLog() {
       pOutput += pSleepNumber;
       pOutput += "\n";
 
-      std::string forkId = std::to_string(forks[i].getId());
-      std::string forkOwnerName = forks[i].getOwnerName();
+      std::string forkId = std::to_string(forks[i]->getId());
+      std::string forkOwnerName = forks[i]->getOwnerName();
       fOutput += "Fork ";
       fOutput += forkId;
       fOutput += " has owner: ";
